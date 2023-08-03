@@ -1,5 +1,7 @@
 package com.example.mutsaSNS.config.filter;
 
+import com.example.mutsaSNS.domain.entity.user.PrincipalUserDetails;
+import com.example.mutsaSNS.domain.entity.user.User;
 import com.example.mutsaSNS.jwt.TokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;

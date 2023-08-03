@@ -1,5 +1,6 @@
 package com.example.mutsaSNS.jwt;
 
+import com.example.mutsaSNS.domain.entity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
