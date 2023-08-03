@@ -49,7 +49,6 @@ public class TokenProvider {
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plusSeconds(7200)))
                 .claim("id", user.getId())
-                .claim("role", user.getRole())
                 .signWith(key)
                 .compact();
     }
@@ -64,7 +63,7 @@ public class TokenProvider {
 
     public boolean validToken(String token) {
         try {
-            jwtParser.parseClaimsJwt(token);
+            jwtParser.parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             log.error("invalidToken", e);
@@ -73,7 +72,7 @@ public class TokenProvider {
     }
 
     public Claims getClaims(String token) {
-        return jwtParser.parseClaimsJwt(token)
+        return jwtParser.parseClaimsJws(token)
                 .getBody();
     }
 }
