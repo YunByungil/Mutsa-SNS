@@ -16,7 +16,7 @@ public class PrincipalUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("아이디/비밀번호가 일치하지 않습니다."));
+                .orElseThrow(() -> new RuntimeException("아이디/비밀번호가 일치하지 않습니다."));
         return new PrincipalUserDetails(user);
     }
 }
