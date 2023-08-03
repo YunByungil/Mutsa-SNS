@@ -1,5 +1,6 @@
 package com.example.mutsaSNS.domain.entity.user;
 
+import com.example.mutsaSNS.domain.entity.BaseTimeEntity;
 import com.example.mutsaSNS.domain.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
