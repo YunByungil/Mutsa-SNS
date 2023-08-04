@@ -44,15 +44,6 @@ public class TokenProvider {
                 .compact();
     }
 
-    public String createRefreshToken(User user) {
-        return Jwts.builder()
-                .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(7200)))
-                .claim("id", user.getId())
-                .signWith(key)
-                .compact();
-    }
-
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
         Set<SimpleGrantedAuthority> authorities =
