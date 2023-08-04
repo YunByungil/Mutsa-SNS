@@ -1,8 +1,10 @@
 package com.example.mutsaSNS.config.filter;
 
 import com.example.mutsaSNS.domain.Response;
+import com.example.mutsaSNS.domain.entity.token.RefreshToken;
 import com.example.mutsaSNS.domain.entity.user.PrincipalUserDetails;
 import com.example.mutsaSNS.domain.entity.user.User;
+import com.example.mutsaSNS.domain.repository.token.RefreshTokenRepository;
 import com.example.mutsaSNS.jwt.TokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -20,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -48,7 +52,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         PrincipalUserDetails userDetails = (PrincipalUserDetails) authResult.getPrincipal();
         String accessToken = tokenProvider.createAccessToken(userDetails.getUser());
-        String refreshToken = tokenProvider.createRefreshToken(userDetails.getUser());
+        String refreshToken = UUID.randomUUID().toString();
+
+        RefreshToken redis = new RefreshToken(refreshToken, userDetails.getUser().getId());
+        refreshTokenRepository.save(redis);
+
         setTokenResponse(response, accessToken, refreshToken);
     }
 
@@ -77,5 +85,4 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
                 objectMapper.writeValueAsString(
                         Response.success(result)));
     }
-
 }
