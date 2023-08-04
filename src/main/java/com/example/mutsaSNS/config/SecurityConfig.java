@@ -22,7 +22,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers("/join").permitAll()
+                        .requestMatchers("/join", "/token").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
