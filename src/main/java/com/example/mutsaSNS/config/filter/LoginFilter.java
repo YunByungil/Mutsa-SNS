@@ -54,8 +54,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = tokenProvider.createAccessToken(userDetails.getUser());
         String refreshToken = UUID.randomUUID().toString();
 
-        RefreshToken redis = new RefreshToken(refreshToken, userDetails.getUser().getId());
-        refreshTokenRepository.save(redis);
+//        RefreshToken redis = new RefreshToken(refreshToken, userDetails.getUser().getId());
+//        refreshTokenRepository.save(redis);
 
         setTokenResponse(response, accessToken, refreshToken);
     }
