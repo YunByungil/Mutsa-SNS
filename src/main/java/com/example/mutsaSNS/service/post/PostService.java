@@ -9,6 +9,7 @@ import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.post.request.PostCreateRequestDto;
 import com.example.mutsaSNS.dto.post.response.PostCreateResponseDto;
 import com.example.mutsaSNS.dto.post.response.PostListResponseDto;
+import com.example.mutsaSNS.dto.post.response.PostOneResponseDto;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -99,6 +100,13 @@ public class PostService {
                 .collect(Collectors.toList());
 
         return listResponseDto;
+    }
+
+    public PostOneResponseDto readOnePost(final Long postId, final Long userId) {
+        Post post = postRepository.findAllByPostId(postId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+
+        return new PostOneResponseDto(post);
     }
 
     private String generatePostFilename(final MultipartFile image) {

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -16,6 +17,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "where p.user.id =:userId " +
             "order by i.id desc")
     List<Post> findAllByUserId(@Param("userId") Long userId);
+    @Query("select p " +
+            "from Post p " +
+            "join fetch p.user " +
+            "join fetch p.postImages i " +
+            "where p.id =:postId")
+    Optional<Post> findAllByPostId(@Param("postId") Long postId);
 //    @Query("select p " +
 //            "from Post p " +
 //            "join fetch p.user " +
