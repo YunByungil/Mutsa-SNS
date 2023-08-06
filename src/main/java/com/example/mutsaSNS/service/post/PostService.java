@@ -88,11 +88,11 @@ public class PostService {
         return new PostCreateResponseDto(post);
     }
 
-    public List<PostListResponseDto> readAllPost(final Long userId) {
-        User user = userRepository.findById(userId)
+    public List<PostListResponseDto> readAllPost(final String username) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
 
-        List<Post> allByUserId = postRepository.findAllByUserId(userId);
+        List<Post> allByUserId = postRepository.findAllByUserId(user.getId());
 
         List<PostListResponseDto> listResponseDto = allByUserId.stream()
                 .map(post -> new PostListResponseDto(post, user))

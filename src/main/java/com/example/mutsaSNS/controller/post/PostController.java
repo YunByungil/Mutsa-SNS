@@ -27,9 +27,9 @@ public class PostController {
         return Response.success(postService.createPost(createDto, userId));
     }
 
-    @GetMapping("/{userId}")
-    public Response<List<PostListResponseDto>> readAllPost(@PathVariable Long userId) {
-        return Response.success(postService.readAllPost(userId));
+    @GetMapping("/{username}")
+    public Response<List<PostListResponseDto>> readAllPost(@PathVariable String username) {
+        return Response.success(postService.readAllPost(username));
     }
 
 }
