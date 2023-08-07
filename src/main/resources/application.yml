@@ -18,6 +18,15 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  mvc:
+    static-path-pattern: /static/**
+  web:
+    resources:
+      static-locations: file:post/,file:profile/,classpath:/static
 
 
 jwt:
