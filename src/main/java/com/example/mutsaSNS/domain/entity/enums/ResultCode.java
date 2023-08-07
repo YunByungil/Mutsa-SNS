@@ -11,6 +11,7 @@ public enum ResultCode {
     SUCCESS(HttpStatus.OK),
     CONFLICT(HttpStatus.CONFLICT),
     NOT_FOUND(HttpStatus.NOT_FOUND),
+    FORBIDDEN(HttpStatus.FORBIDDEN),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final HttpStatus httpStatus;

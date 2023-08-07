@@ -2,6 +2,7 @@ package com.example.mutsaSNS.dto.post.response;
 
 import com.example.mutsaSNS.domain.entity.post.Post;
 import com.example.mutsaSNS.domain.entity.user.User;
+import com.example.mutsaSNS.dto.image.response.ImageListResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class PostOneResponseDto {
     private String content;
     private int likeCount;
     private int commentCount;
-    private List<String> imageUrl;
+    private List<ImageListResponseDto> imageUrl;
 
     public PostOneResponseDto(final Post post) {
         this.id = post.getId();
@@ -29,7 +30,7 @@ public class PostOneResponseDto {
         this.likeCount = post.getLikeCount();
         this.commentCount = post.getCommentCount();
         this.imageUrl = post.getPostImages().stream()
-                .map(postImage -> postImage.getImage())
+                .map(i -> new ImageListResponseDto(i))
                 .collect(Collectors.toList());
     }
 }

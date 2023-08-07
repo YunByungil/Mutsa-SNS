@@ -15,7 +15,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "join fetch p.user " +
             "join fetch p.postImages i " +
             "where p.user.id =:userId " +
-            "order by i.id desc")
+            "order by p.id desc " +
+            ", i.id asc")
     List<Post> findAllByUserId(@Param("userId") Long userId);
     @Query("select p " +
             "from Post p " +
