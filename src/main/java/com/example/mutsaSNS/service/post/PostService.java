@@ -7,9 +7,11 @@ import com.example.mutsaSNS.domain.repository.post.PostImageRepository;
 import com.example.mutsaSNS.domain.repository.post.PostRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.post.request.PostCreateRequestDto;
+import com.example.mutsaSNS.dto.post.request.PostUpdateRequestDto;
 import com.example.mutsaSNS.dto.post.response.PostCreateResponseDto;
 import com.example.mutsaSNS.dto.post.response.PostListResponseDto;
 import com.example.mutsaSNS.dto.post.response.PostOneResponseDto;
+import com.example.mutsaSNS.dto.post.response.PostUpdateResponseDto;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -107,6 +110,70 @@ public class PostService {
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
 
         return new PostOneResponseDto(post);
+    }
+
+    public PostUpdateResponseDto updatePost(final PostUpdateRequestDto updateDto, final Long postId, final Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+
+        if (post.getUser().getId() != userId) {
+            throw new MutsaSnsAppException(NOT_MATCH_POST_USER, NOT_MATCH_POST_USER.getMessage());
+        }
+
+        if (updateDto.getImages() == null || updateDto.getImages().isEmpty()) {
+            return new PostUpdateResponseDto(post);
+        }
+
+        // 저장된 게시글 ID의 값을 사용해서 images 저장
+        List<MultipartFile> images = updateDto.getImages();
+        String postDir = String.format("post/%d/", post.getId());
+
+        try {
+            Files.createDirectories(Path.of(postDir));
+        } catch (IOException e) {
+            log.error("IOException = {}", e);
+            throw new MutsaSnsAppException(SERVER_ERROR, SERVER_ERROR.getMessage());
+        }
+
+        for (MultipartFile image : images) {
+            String postFilename = generatePostFilename(image);
+
+            String postPath = postDir + postFilename;
+            Path path = Path.of(postPath);
+
+            try {
+                image.transferTo(path);
+            } catch (IOException e) {
+                log.error("IOException = {}", e);
+                throw new MutsaSnsAppException(SERVER_ERROR, SERVER_ERROR.getMessage());
+            }
+
+            String imageUrl = String.format("/static/%d/%s", post.getId(), postFilename);
+            imageRepository.save(PostImage.builder()
+                    .post(post)
+                    .image(imageUrl)
+                    .build());
+        }
+
+        // TODO: Response 에서 Select 쿼리 한 번 더 나가는데 수정하자.
+        return new PostUpdateResponseDto(post);
+    }
+
+    private void deleteFilesInProfileDirectory(String profileDir) {
+        File directory = new File(profileDir);
+        if (!(directory.exists() && directory.isDirectory())) {
+            return;
+        }
+
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
+        }
     }
 
     private String generatePostFilename(final MultipartFile image) {

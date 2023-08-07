@@ -2,16 +2,15 @@ package com.example.mutsaSNS.controller.post;
 
 import com.example.mutsaSNS.domain.Response;
 import com.example.mutsaSNS.dto.post.request.PostCreateRequestDto;
+import com.example.mutsaSNS.dto.post.request.PostUpdateRequestDto;
 import com.example.mutsaSNS.dto.post.response.PostCreateResponseDto;
 import com.example.mutsaSNS.dto.post.response.PostListResponseDto;
 import com.example.mutsaSNS.dto.post.response.PostOneResponseDto;
+import com.example.mutsaSNS.dto.post.response.PostUpdateResponseDto;
 import com.example.mutsaSNS.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +37,14 @@ public class PostController {
                                                     final Authentication authentication) {
         Long userId = Long.parseLong(authentication.getName());
         return Response.success(postService.readOnePost(postId, userId));
+    }
+
+    @PutMapping("/post/{postId}")
+    public Response<PostUpdateResponseDto> updatePost(@PathVariable final Long postId,
+                                                      final PostUpdateRequestDto updateDto,
+                                                      final Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(postService.updatePost(updateDto, postId, userId));
     }
 
 }
