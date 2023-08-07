@@ -58,4 +58,10 @@ public class PostController {
         Long userId = Long.parseLong(authentication.getName());
         return Response.success(postService.deletePost(postId, userId));
     }
+
+    @GetMapping("/post/following")
+    public Response<List<PostListResponseDto>> getFollowingPost(final Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(postService.getFollowingPost(userId));
+    }
 }

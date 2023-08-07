@@ -1,8 +1,10 @@
 package com.example.mutsaSNS.service.post;
 
+import com.example.mutsaSNS.domain.entity.follow.Follow;
 import com.example.mutsaSNS.domain.entity.post.Post;
 import com.example.mutsaSNS.domain.entity.post.PostImage;
 import com.example.mutsaSNS.domain.entity.user.User;
+import com.example.mutsaSNS.domain.repository.follow.FollowRepository;
 import com.example.mutsaSNS.domain.repository.post.PostImageRepository;
 import com.example.mutsaSNS.domain.repository.post.PostRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
@@ -36,6 +38,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostImageRepository imageRepository;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
 
     @Transactional
     public PostCreateResponseDto createPost(final PostCreateRequestDto postCreateDto, final Long userId) {
@@ -214,6 +217,21 @@ public class PostService {
         postRepository.delete(post);
 
         return new PostDeleteResponseDto(post);
+    }
+
+    public List<PostListResponseDto> getFollowingPost(final Long userId) {
+        List<Follow> byFollowerId = followRepository.findByFollowerId(userId);
+        List<Long> followingId = new ArrayList<>();
+        for (Follow follow : byFollowerId) {
+            followingId.add(follow.getFollowing().getId());
+        }
+
+        List<Post> posts = postRepository.customFindAllByFollowingId(followingId);
+        List<PostListResponseDto> collect = posts.stream()
+                .map(p -> new PostListResponseDto(p, p.getUser()))
+                .collect(Collectors.toList());
+
+        return collect;
     }
 
     private void deleteFilesInPostDirectory(String postDir) {
