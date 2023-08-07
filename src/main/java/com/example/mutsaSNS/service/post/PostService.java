@@ -105,7 +105,7 @@ public class PostService {
 
     public PostOneResponseDto readOnePost(final Long postId, final Long userId) {
         Post post = postRepository.findAllByPostId(postId)
-                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_POST, NOT_FOUND_POST.getMessage()));
 
         return new PostOneResponseDto(post);
     }
@@ -116,7 +116,7 @@ public class PostService {
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_POST, NOT_FOUND_POST.getMessage()));
 
         if (post.getUser().getId() != userId) {
             throw new MutsaSnsAppException(NOT_MATCH_POST_USER, NOT_MATCH_POST_USER.getMessage());
@@ -165,7 +165,7 @@ public class PostService {
     @Transactional
     public PostUpdateResponseDto deleteImages(final Long postId, final Long imageId, final Long userId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_POST, NOT_FOUND_POST.getMessage()));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
@@ -175,7 +175,7 @@ public class PostService {
         }
 
         PostImage postImage = imageRepository.findById(imageId)
-                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_IMAGE, NOT_FOUNT_IMAGE.getMessage()));
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_IMAGE, NOT_FOUND_IMAGE.getMessage()));
 
         List<String> filename = new ArrayList<>();
 
@@ -202,7 +202,7 @@ public class PostService {
     @Transactional
     public PostDeleteResponseDto deletePost(final Long postId, final Long userId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_POST, NOT_FOUND_POST.getMessage()));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
