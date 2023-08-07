@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -123,8 +124,9 @@ public class PostService {
             throw new MutsaSnsAppException(NOT_MATCH_POST_USER, NOT_MATCH_POST_USER.getMessage());
         }
 
+        List<String> resultUrl = new ArrayList<>();
         if (updateDto.getImages() == null || updateDto.getImages().isEmpty()) {
-            return new PostUpdateResponseDto(post);
+            return new PostUpdateResponseDto(post, resultUrl);
         }
 
         // 저장된 게시글 ID의 값을 사용해서 images 저장
@@ -152,6 +154,7 @@ public class PostService {
             }
 
             String imageUrl = String.format("/static/%d/%s", post.getId(), postFilename);
+            resultUrl.add(imageUrl);
             imageRepository.save(PostImage.builder()
                     .post(post)
                     .image(imageUrl)
@@ -159,7 +162,7 @@ public class PostService {
         }
 
         // TODO: Response 에서 Select 쿼리 한 번 더 나가는데 수정하자.
-        return new PostUpdateResponseDto(post);
+        return new PostUpdateResponseDto(post, resultUrl);
     }
 
     private void deleteFilesInProfileDirectory(String profileDir) {

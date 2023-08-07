@@ -16,10 +16,8 @@ public class PostUpdateResponseDto {
     private Long id;
     private List<String> images;
 
-    public PostUpdateResponseDto(final Post post) {
+    public PostUpdateResponseDto(final Post post, final List<String> images) {
         this.id = post.getId();
-        this.images = post.getPostImages().stream()
-                .map(PostImage::getImage)
-                .collect(Collectors.toList());
+        this.images = images;
     }
 }
