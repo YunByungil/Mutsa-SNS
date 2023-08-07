@@ -3,10 +3,7 @@ package com.example.mutsaSNS.controller.post;
 import com.example.mutsaSNS.domain.Response;
 import com.example.mutsaSNS.dto.post.request.PostCreateRequestDto;
 import com.example.mutsaSNS.dto.post.request.PostUpdateRequestDto;
-import com.example.mutsaSNS.dto.post.response.PostCreateResponseDto;
-import com.example.mutsaSNS.dto.post.response.PostListResponseDto;
-import com.example.mutsaSNS.dto.post.response.PostOneResponseDto;
-import com.example.mutsaSNS.dto.post.response.PostUpdateResponseDto;
+import com.example.mutsaSNS.dto.post.response.*;
 import com.example.mutsaSNS.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -53,5 +50,12 @@ public class PostController {
                                                         final Authentication authentication) {
         Long userId = Long.parseLong(authentication.getName());
         return Response.success(postService.deleteImages(postId, imageId, userId));
+    }
+
+    @DeleteMapping("/post/{postId}")
+    public Response<PostDeleteResponseDto> deletePost(@PathVariable final Long postId,
+                                                      final Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(postService.deletePost(postId, userId));
     }
 }
