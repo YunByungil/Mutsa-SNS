@@ -8,10 +8,7 @@ import com.example.mutsaSNS.domain.repository.post.PostRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.post.request.PostCreateRequestDto;
 import com.example.mutsaSNS.dto.post.request.PostUpdateRequestDto;
-import com.example.mutsaSNS.dto.post.response.PostCreateResponseDto;
-import com.example.mutsaSNS.dto.post.response.PostListResponseDto;
-import com.example.mutsaSNS.dto.post.response.PostOneResponseDto;
-import com.example.mutsaSNS.dto.post.response.PostUpdateResponseDto;
+import com.example.mutsaSNS.dto.post.response.*;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -200,6 +197,23 @@ public class PostService {
         }
 
         return new PostUpdateResponseDto(post, filename);
+    }
+
+    @Transactional
+    public PostDeleteResponseDto deletePost(final Long postId, final Long userId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
+
+        if (post.getUser().getId() != userId) {
+            throw new MutsaSnsAppException(NOT_MATCH_POST_USER, NOT_MATCH_POST_USER.getMessage());
+        }
+
+        postRepository.delete(post);
+
+        return new PostDeleteResponseDto(post);
     }
 
     private void deleteFilesInPostDirectory(String postDir) {
