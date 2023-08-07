@@ -4,6 +4,7 @@ import com.example.mutsaSNS.domain.Response;
 import com.example.mutsaSNS.dto.comment.request.CommentCreateRequestDto;
 import com.example.mutsaSNS.dto.comment.request.CommentUpdateRequestDto;
 import com.example.mutsaSNS.dto.comment.response.CommentCreateResponseDto;
+import com.example.mutsaSNS.dto.comment.response.CommentDeleteResponseDto;
 import com.example.mutsaSNS.dto.comment.response.CommentUpdateResponseDto;
 import com.example.mutsaSNS.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,13 @@ public class CommentController {
                                                             final Authentication authentication) {
         Long userId = Long.parseLong(authentication.getName());
         return Response.success(commentService.updateComment(updateDto, commentId, userId));
+    }
+
+    @DeleteMapping("/comment/{commentId}")
+    public Response<CommentDeleteResponseDto> deleteComment(@PathVariable final Long commentId,
+                                                            final Authentication authentication) {
+        System.out.println("commentId = " + commentId);
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(commentService.deleteComment(commentId, userId));
     }
 }

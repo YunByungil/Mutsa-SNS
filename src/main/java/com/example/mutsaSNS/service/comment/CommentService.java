@@ -9,6 +9,7 @@ import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.comment.request.CommentCreateRequestDto;
 import com.example.mutsaSNS.dto.comment.request.CommentUpdateRequestDto;
 import com.example.mutsaSNS.dto.comment.response.CommentCreateResponseDto;
+import com.example.mutsaSNS.dto.comment.response.CommentDeleteResponseDto;
 import com.example.mutsaSNS.dto.comment.response.CommentUpdateResponseDto;
 import com.example.mutsaSNS.exception.ErrorCode;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
@@ -52,5 +53,19 @@ public class CommentService {
         comment.updateComment(updateDto);
 
         return new CommentUpdateResponseDto(comment);
+    }
+
+    @Transactional
+    public CommentDeleteResponseDto deleteComment(final Long commentId, final Long userId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_COMMENT, NOT_FOUND_COMMENT.getMessage()));
+
+        if (comment.getUser().getId() != userId) {
+            throw new MutsaSnsAppException(NOT_MATCH_COMMENT_USER, NOT_MATCH_COMMENT_USER.getMessage());
+        }
+
+        commentRepository.delete(comment);
+
+        return new CommentDeleteResponseDto(comment);
     }
 }
