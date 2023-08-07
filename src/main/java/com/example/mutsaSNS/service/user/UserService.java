@@ -5,8 +5,8 @@ import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.user.request.UserJoinRequestDto;
 import com.example.mutsaSNS.dto.user.request.UserUpdateRequestDto;
 import com.example.mutsaSNS.dto.user.response.UserJoinResponseDto;
+import com.example.mutsaSNS.dto.user.response.UserProfileResponseDto;
 import com.example.mutsaSNS.dto.user.response.UserUpdateResponseDto;
-import com.example.mutsaSNS.exception.ErrorCode;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +75,7 @@ public class UserService {
     }
     @Transactional
     public UserUpdateResponseDto updateImage(MultipartFile updateDto,
-                                            final Long userId) throws IOException {
+                                             final Long userId) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
 
@@ -104,6 +104,13 @@ public class UserService {
         user.updateUserOnlyImage(String.format("/static/%d/%s", userId, profileFilename));
 
         return new UserUpdateResponseDto(user);
+    }
+
+    public UserProfileResponseDto getUserProfile(final String username, final Long userId) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
+
+        return new UserProfileResponseDto(user);
     }
 
     private String generateProfileFilenameOnlyImage(MultipartFile updateDto) {
