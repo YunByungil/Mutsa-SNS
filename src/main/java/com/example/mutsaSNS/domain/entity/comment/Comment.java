@@ -3,6 +3,7 @@ package com.example.mutsaSNS.domain.entity.comment;
 import com.example.mutsaSNS.domain.entity.BaseTimeEntity;
 import com.example.mutsaSNS.domain.entity.post.Post;
 import com.example.mutsaSNS.domain.entity.user.User;
+import com.example.mutsaSNS.dto.comment.request.CommentUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,5 +33,9 @@ public class Comment extends BaseTimeEntity {
         this.content = content;
         this.user = user;
         this.post = post;
+    }
+
+    public void updateComment(final CommentUpdateRequestDto updateDto) {
+        this.content = updateDto.getContent();
     }
 }

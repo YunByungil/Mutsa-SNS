@@ -2,14 +2,13 @@ package com.example.mutsaSNS.controller.comment;
 
 import com.example.mutsaSNS.domain.Response;
 import com.example.mutsaSNS.dto.comment.request.CommentCreateRequestDto;
+import com.example.mutsaSNS.dto.comment.request.CommentUpdateRequestDto;
 import com.example.mutsaSNS.dto.comment.response.CommentCreateResponseDto;
+import com.example.mutsaSNS.dto.comment.response.CommentUpdateResponseDto;
 import com.example.mutsaSNS.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,5 +22,13 @@ public class CommentController {
                                                             final Authentication authentication) {
         Long userId = Long.parseLong(authentication.getName());
         return Response.success(commentService.createComment(createDto, postId, userId));
+    }
+
+    @PutMapping("/comment/{commentId}")
+    public Response<CommentUpdateResponseDto> updateComment(@PathVariable final Long commentId,
+                                                            @RequestBody final CommentUpdateRequestDto updateDto,
+                                                            final Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(commentService.updateComment(updateDto, commentId, userId));
     }
 }

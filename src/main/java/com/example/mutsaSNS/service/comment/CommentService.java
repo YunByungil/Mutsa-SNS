@@ -7,15 +7,16 @@ import com.example.mutsaSNS.domain.repository.comment.CommentRepository;
 import com.example.mutsaSNS.domain.repository.post.PostRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.comment.request.CommentCreateRequestDto;
+import com.example.mutsaSNS.dto.comment.request.CommentUpdateRequestDto;
 import com.example.mutsaSNS.dto.comment.response.CommentCreateResponseDto;
+import com.example.mutsaSNS.dto.comment.response.CommentUpdateResponseDto;
 import com.example.mutsaSNS.exception.ErrorCode;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.mutsaSNS.exception.ErrorCode.NOT_FOUND_USER;
-import static com.example.mutsaSNS.exception.ErrorCode.NOT_FOUNT_POST;
+import static com.example.mutsaSNS.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -29,7 +30,7 @@ public class CommentService {
     @Transactional
     public CommentCreateResponseDto createComment(final CommentCreateRequestDto createDto, final Long postId, final Long userId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_POST, NOT_FOUND_POST.getMessage()));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
@@ -37,5 +38,19 @@ public class CommentService {
         Comment comment = commentRepository.save(createDto.toEntity(user, post));
 
         return new CommentCreateResponseDto(comment);
+    }
+
+    @Transactional
+    public CommentUpdateResponseDto updateComment(final CommentUpdateRequestDto updateDto, final Long commentId, final Long userId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_COMMENT, NOT_FOUND_COMMENT.getMessage()));
+
+        if (comment.getUser().getId() != userId) {
+            throw new MutsaSnsAppException(NOT_MATCH_COMMENT_USER, NOT_MATCH_COMMENT_USER.getMessage());
+        }
+
+        comment.updateComment(updateDto);
+
+        return new CommentUpdateResponseDto(comment);
     }
 }
