@@ -41,4 +41,8 @@ public class Post extends BaseTimeEntity {
         this.likeCount = 0;
         this.commentCount = 0;
     }
+
+    public void updateDraft(boolean draft) {
+        this.draft = draft;
+    }
 }

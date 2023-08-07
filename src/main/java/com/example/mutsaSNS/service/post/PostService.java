@@ -113,6 +113,7 @@ public class PostService {
         return new PostOneResponseDto(post);
     }
 
+    @Transactional
     public PostUpdateResponseDto updatePost(final PostUpdateRequestDto updateDto, final Long postId, final Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
@@ -161,22 +162,49 @@ public class PostService {
                     .build());
         }
 
-        // TODO: Response 에서 Select 쿼리 한 번 더 나가는데 수정하자.
         return new PostUpdateResponseDto(post, resultUrl);
     }
 
-    private void deleteFilesInProfileDirectory(String profileDir) {
-        File directory = new File(profileDir);
-        if (!(directory.exists() && directory.isDirectory())) {
-            return;
+    @Transactional
+    public PostUpdateResponseDto deleteImages(final Long postId, final Long imageId, final Long userId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
+
+        if (post.getUser().getId() != userId) {
+            throw new MutsaSnsAppException(NOT_MATCH_POST_USER, NOT_MATCH_POST_USER.getMessage());
         }
 
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                file.delete();
-            }
+        PostImage postImage = imageRepository.findById(imageId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_IMAGE, NOT_FOUNT_IMAGE.getMessage()));
+
+        List<String> filename = new ArrayList<>();
+
+        String[] originalFilename = postImage.getImage().split("static");
+        String postDir = String.format("post%s", originalFilename[1]);
+        filename.add(postDir);
+
+        deleteFilesInPostDirectory(postDir);
+        imageRepository.deleteById(imageId);
+
+        List<PostImage> postImageByPostId = imageRepository.findAllByPostId(postId);
+        if (postImageByPostId.size() == 0) {
+            String imageUrl = String.format("/static/%d/%s", 0, "base.png");
+            imageRepository.save(PostImage.builder()
+                    .post(post)
+                    .image(imageUrl)
+                    .build());
+            post.updateDraft(true);
         }
+
+        return new PostUpdateResponseDto(post, filename);
+    }
+
+    private void deleteFilesInPostDirectory(String postDir) {
+        File file = new File(postDir);
+        file.delete();
     }
 
     private String generatePostFilename(final MultipartFile image) {

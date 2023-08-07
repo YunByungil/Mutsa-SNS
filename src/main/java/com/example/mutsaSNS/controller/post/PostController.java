@@ -47,4 +47,11 @@ public class PostController {
         return Response.success(postService.updatePost(updateDto, postId, userId));
     }
 
+    @DeleteMapping("/post/{postId}/{imageId}")
+    public Response<PostUpdateResponseDto> deleteImages(@PathVariable final Long postId,
+                                                        @PathVariable final Long imageId,
+                                                        final Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(postService.deleteImages(postId, imageId, userId));
+    }
 }
