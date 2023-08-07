@@ -4,6 +4,7 @@ import com.example.mutsaSNS.domain.Response;
 import com.example.mutsaSNS.dto.user.request.UserJoinRequestDto;
 import com.example.mutsaSNS.dto.user.request.UserUpdateRequestDto;
 import com.example.mutsaSNS.dto.user.response.UserJoinResponseDto;
+import com.example.mutsaSNS.dto.user.response.UserProfileResponseDto;
 import com.example.mutsaSNS.dto.user.response.UserUpdateResponseDto;
 import com.example.mutsaSNS.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,12 @@ public class UserController {
                                                               final Authentication authentication) throws IOException {
         Long userId = Long.parseLong(authentication.getName());
         return Response.success(userService.updateImage(updateDto, userId));
+    }
+
+    @GetMapping("/profile/{username}")
+    public Response<UserProfileResponseDto> getUserProfile(@PathVariable final String username,
+                                                           final Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(userService.getUserProfile(username, userId));
     }
 }
