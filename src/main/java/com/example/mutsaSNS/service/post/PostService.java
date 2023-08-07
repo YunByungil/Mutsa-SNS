@@ -8,6 +8,8 @@ import com.example.mutsaSNS.domain.repository.post.PostRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.post.request.PostCreateRequestDto;
 import com.example.mutsaSNS.dto.post.response.PostCreateResponseDto;
+import com.example.mutsaSNS.dto.post.response.PostListResponseDto;
+import com.example.mutsaSNS.dto.post.response.PostOneResponseDto;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.example.mutsaSNS.exception.ErrorCode.*;
 
@@ -84,6 +87,26 @@ public class PostService {
         }
 
         return new PostCreateResponseDto(post);
+    }
+
+    public List<PostListResponseDto> readAllPost(final String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_USER, NOT_FOUND_USER.getMessage()));
+
+        List<Post> allByUserId = postRepository.findAllByUserId(user.getId());
+
+        List<PostListResponseDto> listResponseDto = allByUserId.stream()
+                .map(post -> new PostListResponseDto(post, user))
+                .collect(Collectors.toList());
+
+        return listResponseDto;
+    }
+
+    public PostOneResponseDto readOnePost(final Long postId, final Long userId) {
+        Post post = postRepository.findAllByPostId(postId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUNT_POST, NOT_FOUNT_POST.getMessage()));
+
+        return new PostOneResponseDto(post);
     }
 
     private String generatePostFilename(final MultipartFile image) {
