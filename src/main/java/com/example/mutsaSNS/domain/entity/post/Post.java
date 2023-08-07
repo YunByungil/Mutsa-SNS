@@ -1,6 +1,7 @@
 package com.example.mutsaSNS.domain.entity.post;
 
 import com.example.mutsaSNS.domain.entity.BaseTimeEntity;
+import com.example.mutsaSNS.domain.entity.comment.Comment;
 import com.example.mutsaSNS.domain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -36,6 +37,9 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post")
     private List<PostImage> postImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Post(User user, String title, String content, boolean draft) {
