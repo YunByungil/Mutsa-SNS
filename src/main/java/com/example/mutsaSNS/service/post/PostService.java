@@ -241,8 +241,11 @@ public class PostService {
 
     public List<PostListResponseDto> getFriendPost(final Long userId) {
         List<Friend> myFriends =
-                friendRepository.findAllByReceiverIdOrSenderIdAndStatus(userId, userId, ACCEPT);
-
+                friendRepository.customFindAllByReceiverAndStatus(userId, ACCEPT);
+        for (Friend myFriend : myFriends) {
+            System.out.println("myFriend.getSender().getId() = " + myFriend.getSender().getId());
+            System.out.println("myFriend.getReceiver().getId() = " + myFriend.getReceiver().getId());
+        }
         List<Long> friendIds = new ArrayList<>();
         for (Friend myFriend : myFriends) {
             if (!myFriend.getReceiver().getId().equals(userId)) {
