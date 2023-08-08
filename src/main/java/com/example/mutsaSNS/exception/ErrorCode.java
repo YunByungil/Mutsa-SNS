@@ -18,6 +18,8 @@ public enum ErrorCode {
     NOT_MATCH_COMMENT_USER(ResultCode.FORBIDDEN, "댓글을 등록한 유저가 아닙니다."),
     NOT_LIKE_MY_POST(ResultCode.FORBIDDEN, "자신의 게시글은 좋아요를 누를 수 없습니다."),
 
+    DUPLICATE_SUGGEST(ResultCode.CONFLICT, "이미 친구 신청을 했습니다."),
+
     SERVER_ERROR(ResultCode.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다.");
 
     private final ResultCode resultCode;
