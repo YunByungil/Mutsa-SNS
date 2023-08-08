@@ -48,10 +48,12 @@ public class FriendService {
     }
 
     public List<FriendRequestListResponseDto> getFriendRequest(final Long myId) {
-        List<Friend> allByReceiverId = friendRepository.findAllByReceiverId(myId);
+        List<Friend> allByReceiverId = friendRepository.findAllByReceiverIdAndStatus(myId, PENDING);
 
         return allByReceiverId.stream()
                 .map(FriendRequestListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+
 }
