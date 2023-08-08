@@ -4,6 +4,7 @@ import com.example.mutsaSNS.domain.entity.friend.Friend;
 import com.example.mutsaSNS.domain.entity.user.User;
 import com.example.mutsaSNS.domain.repository.friend.FriendRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
+import com.example.mutsaSNS.dto.friend.request.FriendUpdateRequestDto;
 import com.example.mutsaSNS.dto.friend.response.FriendCreateResponseDto;
 import com.example.mutsaSNS.dto.friend.response.FriendRequestListResponseDto;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
@@ -15,8 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.mutsaSNS.domain.entity.enums.FriendRequestStatus.PENDING;
-import static com.example.mutsaSNS.exception.ErrorCode.DUPLICATE_SUGGEST;
-import static com.example.mutsaSNS.exception.ErrorCode.NOT_FOUND_USER;
+import static com.example.mutsaSNS.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -53,6 +53,20 @@ public class FriendService {
         return allByReceiverId.stream()
                 .map(FriendRequestListResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public FriendCreateResponseDto updateFriendRequest(final FriendUpdateRequestDto updateDto,
+                                                       final Long friendId, final Long myId) {
+        Friend friend = friendRepository.findById(friendId)
+                .orElseThrow(() -> new MutsaSnsAppException(NOT_FOUND_FRIEND_REQUEST, NOT_FOUND_FRIEND_REQUEST.getMessage()));
+
+        if (!friend.getReceiver().getId().equals(myId)) {
+            throw new MutsaSnsAppException(INVALID_PERMISSION, INVALID_PERMISSION.getMessage());
+        }
+
+        friend.updateFriendStatus(updateDto.getState());
+        return new FriendCreateResponseDto(friend);
     }
 
 

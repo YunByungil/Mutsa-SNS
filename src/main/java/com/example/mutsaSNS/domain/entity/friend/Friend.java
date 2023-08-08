@@ -38,4 +38,8 @@ public class Friend {
         this.createdAt = LocalDateTime.now();
         this.status = FriendRequestStatus.PENDING;
     }
+
+    public void updateFriendStatus(final FriendRequestStatus status) {
+        this.status = status;
+    }
 }
