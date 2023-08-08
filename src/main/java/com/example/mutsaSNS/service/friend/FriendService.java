@@ -5,10 +5,14 @@ import com.example.mutsaSNS.domain.entity.user.User;
 import com.example.mutsaSNS.domain.repository.friend.FriendRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
 import com.example.mutsaSNS.dto.friend.response.FriendCreateResponseDto;
+import com.example.mutsaSNS.dto.friend.response.FriendRequestListResponseDto;
 import com.example.mutsaSNS.exception.MutsaSnsAppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.mutsaSNS.domain.entity.enums.FriendRequestStatus.PENDING;
 import static com.example.mutsaSNS.exception.ErrorCode.DUPLICATE_SUGGEST;
@@ -41,5 +45,13 @@ public class FriendService {
                 .receiver(user)
                 .build());
         return new FriendCreateResponseDto(friend);
+    }
+
+    public List<FriendRequestListResponseDto> getFriendRequest(final Long myId) {
+        List<Friend> allByReceiverId = friendRepository.findAllByReceiverId(myId);
+
+        return allByReceiverId.stream()
+                .map(FriendRequestListResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
