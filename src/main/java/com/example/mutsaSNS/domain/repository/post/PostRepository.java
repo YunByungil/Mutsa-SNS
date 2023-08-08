@@ -33,4 +33,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "where p.user.id in :followingId " +
             "order by p.id desc")
     List<Post> customFindAllByFollowingId(@Param("followingId") List<Long> followingId);
+
+    @Query("select p " +
+            "from Post p " +
+            "join fetch p.user " +
+            "join fetch p.postImages i " +
+            "where p.user.id in :friendId " +
+            "order by p.id desc")
+    List<Post> customFindAllByFriendId(@Param("friendId") List<Long> friendId);
 }

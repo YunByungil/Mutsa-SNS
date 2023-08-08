@@ -1,10 +1,13 @@
 package com.example.mutsaSNS.service.post;
 
+import com.example.mutsaSNS.domain.entity.enums.FriendRequestStatus;
 import com.example.mutsaSNS.domain.entity.follow.Follow;
+import com.example.mutsaSNS.domain.entity.friend.Friend;
 import com.example.mutsaSNS.domain.entity.post.Post;
 import com.example.mutsaSNS.domain.entity.post.PostImage;
 import com.example.mutsaSNS.domain.entity.user.User;
 import com.example.mutsaSNS.domain.repository.follow.FollowRepository;
+import com.example.mutsaSNS.domain.repository.friend.FriendRepository;
 import com.example.mutsaSNS.domain.repository.post.PostImageRepository;
 import com.example.mutsaSNS.domain.repository.post.PostRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
@@ -27,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.example.mutsaSNS.domain.entity.enums.FriendRequestStatus.ACCEPT;
 import static com.example.mutsaSNS.exception.ErrorCode.*;
 
 @Slf4j
@@ -39,6 +43,7 @@ public class PostService {
     private final PostImageRepository imageRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final FriendRepository friendRepository;
 
     @Transactional
     public PostCreateResponseDto createPost(final PostCreateRequestDto postCreateDto, final Long userId) {
@@ -227,6 +232,28 @@ public class PostService {
         }
 
         List<Post> posts = postRepository.customFindAllByFollowingId(followingId);
+        List<PostListResponseDto> collect = posts.stream()
+                .map(p -> new PostListResponseDto(p, p.getUser()))
+                .collect(Collectors.toList());
+
+        return collect;
+    }
+
+    public List<PostListResponseDto> getFriendPost(final Long userId) {
+        List<Friend> myFriends =
+                friendRepository.findAllByReceiverIdOrSenderIdAndStatus(userId, userId, ACCEPT);
+
+        List<Long> friendIds = new ArrayList<>();
+        for (Friend myFriend : myFriends) {
+            if (!myFriend.getReceiver().getId().equals(userId)) {
+                friendIds.add(myFriend.getReceiver().getId());
+            }
+            if (!myFriend.getSender().getId().equals(userId)) {
+                friendIds.add(myFriend.getSender().getId());
+            }
+        }
+
+        List<Post> posts = postRepository.customFindAllByFriendId(friendIds);
         List<PostListResponseDto> collect = posts.stream()
                 .map(p -> new PostListResponseDto(p, p.getUser()))
                 .collect(Collectors.toList());

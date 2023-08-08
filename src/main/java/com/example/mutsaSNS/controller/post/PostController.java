@@ -64,4 +64,10 @@ public class PostController {
         Long userId = Long.parseLong(authentication.getName());
         return Response.success(postService.getFollowingPost(userId));
     }
+
+    @GetMapping("/post/friend")
+    public Response<List<PostListResponseDto>> getFriendPost(final Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
+        return Response.success(postService.getFriendPost(userId));
+    }
 }
