@@ -8,6 +8,7 @@ import com.example.mutsaSNS.domain.entity.post.PostImage;
 import com.example.mutsaSNS.domain.entity.user.User;
 import com.example.mutsaSNS.domain.repository.follow.FollowRepository;
 import com.example.mutsaSNS.domain.repository.friend.FriendRepository;
+import com.example.mutsaSNS.domain.repository.post.PostImageJDBCRepository;
 import com.example.mutsaSNS.domain.repository.post.PostImageRepository;
 import com.example.mutsaSNS.domain.repository.post.PostRepository;
 import com.example.mutsaSNS.domain.repository.user.UserRepository;
@@ -44,6 +45,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final FriendRepository friendRepository;
+    private final PostImageJDBCRepository jdbcRepository;
 
     @Transactional
     public PostCreateResponseDto createPost(final PostCreateRequestDto postCreateDto, final Long userId) {
@@ -75,6 +77,7 @@ public class PostService {
             throw new MutsaSnsAppException(SERVER_ERROR, SERVER_ERROR.getMessage());
         }
 
+        List<PostImage> postImages = new ArrayList<>();
         for (MultipartFile image : images) {
             String postFilename = generatePostFilename(image);
 
@@ -89,11 +92,13 @@ public class PostService {
             }
 
             String imageUrl = String.format("/static/%d/%s", post.getId(), postFilename);
-            imageRepository.save(PostImage.builder()
+            PostImage postImage = PostImage.builder()
                     .post(post)
                     .image(imageUrl)
-                    .build());
+                    .build();
+            postImages.add(postImage);
         }
+        jdbcRepository.customBulkInsert(postImages);
 
         return new PostCreateResponseDto(post);
     }
