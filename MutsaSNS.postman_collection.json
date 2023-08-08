@@ -1,0 +1,851 @@
+{
+	"info": {
+		"_postman_id": "d1ba5d8e-cb3f-4b65-b35a-2c139469e596",
+		"name": "MutsaSNS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25715996",
+		"_collection_link": "https://crimson-sunset-906774.postman.co/workspace/9d7a85d4-45ca-417c-8464-f9a9c8c9ab7c/collection/25715996-d1ba5d8e-cb3f-4b65-b35a-2c139469e596?action=share&creator=25715996&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "유저 회원가입",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"gd1\",\r\n    \"password\": \"gd\",\r\n    \"email\": \"email\",\r\n    \"phone\": \"phone\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/join",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "유저 피드 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzA1NjcsImV4cCI6MTY5MTQ3Nzc2NywiaWQiOjEsInJvbGUiOiJVU0VSIn0.8n6c3hT3Hd8hWEvsucldvYb1uWGjvP3HTTmaw-5G6to",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/gd",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"gd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "유저 로그인",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"gd1\",\r\n    \"password\": \"gd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "액세스 토큰 발급(리프레쉬 이용)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"a3f75234-8529-48ca-83e3-a456e00cfa9b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/token",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "유저 정보 수정(이미지 포함)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0MDU4MzAsImV4cCI6MTY5MTQxMzAzMCwiaWQiOjIsInJvbGUiOiJVU0VSIn0.yXW42hgqb9xv0WCy9IHAxJay-60YANd1ZDoQQaydXEA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "gd3",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "email",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "phone",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/dbsqu/Desktop/backendschool_5_Zoom_배경화면.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/user/image",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "프로필 이미지만 수정",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEwNTkyNTQsImV4cCI6MTY5MTA2NjQ1NCwiaWQiOjEsInJvbGUiOiJVU0VSIn0.1T19kYuQiIlitaEpeOS0SlXvfvtfCP0nk06Qtf3_Kbs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "username",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "email",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "phone",
+									"value": "phone",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "updateDto",
+									"type": "file",
+									"src": "/C:/Users/dbsqu/Desktop/backendschool_5_Zoom_배경화면.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/user/image",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "유저 프로필 확인",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0MDU3ODIsImV4cCI6MTY5MTQxMjk4MiwiaWQiOjMsInJvbGUiOiJVU0VSIn0.3HDrs81qUOwXNT-qkQEk2RYR1vTT93CmP_kSgEevzT8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/profile/gd3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profile",
+								"gd3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "게시글 작성",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzMzODcsImV4cCI6MTY5MTQ4MDU4NywiaWQiOjEsInJvbGUiOiJVU0VSIn0.JMkRN6UwBkHtm42H83I9xez-2mo5wZIFyXtmwRGqYio",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "게시글 작성합니다.",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "내용 작성합니다.",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/C:/Users/dbsqu/Desktop/1.jpg",
+										"/C:/Users/dbsqu/Desktop/2.jpg",
+										"/C:/Users/dbsqu/Desktop/3.jpg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/post",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "게시글 수정",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEzOTkwMTAsImV4cCI6MTY5MTQwNjIxMCwiaWQiOjEsInJvbGUiOiJVU0VSIn0.Ftx4L4jtNPW50K5Ah6NqiyNJLXjlHNs_9QT8pS8Ycyw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "게시글 수정합니다.",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "내용 수정합니다.",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/C:/Users/dbsqu/Desktop/cat.jpg",
+										"/C:/Users/dbsqu/Desktop/image0.png"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/post/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "게시글 이미지 삭제",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEzNzI5MDksImV4cCI6MTY5MTM4MDEwOSwiaWQiOjEsInJvbGUiOiJVU0VSIn0.FuhE3boR4Tx_W0M3SdwECC2qscVz9MQTAsCqzHMMeqc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/post/1/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"1",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "유저가 작성판 게시글 목록 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0MDU2NTUsImV4cCI6MTY5MTQxMjg1NSwiaWQiOjIsInJvbGUiOiJVU0VSIn0.vu6aQhr1BMPTKG2tPSQUMwFGj8zSKnNQ2WFjlx-b0jY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/gd3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"gd3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "게시글 단건 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0MDU2NTUsImV4cCI6MTY5MTQxMjg1NSwiaWQiOjIsInJvbGUiOiJVU0VSIn0.vu6aQhr1BMPTKG2tPSQUMwFGj8zSKnNQ2WFjlx-b0jY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/post/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "게시글 삭제",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEzODM1MjgsImV4cCI6MTY5MTM5MDcyOCwiaWQiOjEsInJvbGUiOiJVU0VSIn0.e1sem6BJN_L3TBOTD_pK713Zs5NnFyiU13ikqFXPOJ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/post/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "팔로우한 유저 게시글 목록 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzI3ODMsImV4cCI6MTY5MTQ3OTk4MywiaWQiOjIsInJvbGUiOiJVU0VSIn0.aMek8hVYDeFK3tEWR49aiA5wOcBliDSBUgFbBD_2S_g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/post/following",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"following"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "친구인 유저 게시글 목록 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzM0MDgsImV4cCI6MTY5MTQ4MDYwOCwiaWQiOjIsInJvbGUiOiJVU0VSIn0.d0NzknImVFVSx4B41KlYZpK8b1yPO26rC8DHSW-y4wk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/post/friend",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"friend"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "댓글 작성",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEzODk5MjAsImV4cCI6MTY5MTM5NzEyMCwiaWQiOjEsInJvbGUiOiJVU0VSIn0.vqauk3wbYxbN0oVoOjtEM8hcI2ZlD1hn6b8y2fT0hf0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"댓글 작성합니다.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/post/1/comment",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"1",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "댓글 수정",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEzODk5MjAsImV4cCI6MTY5MTM5NzEyMCwiaWQiOjEsInJvbGUiOiJVU0VSIn0.vqauk3wbYxbN0oVoOjtEM8hcI2ZlD1hn6b8y2fT0hf0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"댓글 수정합니다.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/comment/5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comment",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "댓글 삭제",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEzODk5MjAsImV4cCI6MTY5MTM5NzEyMCwiaWQiOjEsInJvbGUiOiJVU0VSIn0.vqauk3wbYxbN0oVoOjtEM8hcI2ZlD1hn6b8y2fT0hf0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/comment/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comment",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PostLike",
+			"item": [
+				{
+					"name": "게시글 좋아요",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTEzOTY1NjksImV4cCI6MTY5MTQwMzc2OSwiaWQiOjIsInJvbGUiOiJVU0VSIn0.OVrWbFCQBk7zuxITxUH-Er1j4k0e2iZ4arJNgnb6hr4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/post/1/like",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"1",
+								"like"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Follow",
+			"item": [
+				{
+					"name": "유저 팔로우",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzE3OTcsImV4cCI6MTY5MTQ3ODk5NywiaWQiOjEsInJvbGUiOiJVU0VSIn0.1Piw0TGKDrHbfhgHenS6GQCTDCdVUdeQB-aKCoLJGAo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/follow/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"follow",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Friend",
+			"item": [
+				{
+					"name": "친구신청",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzMzODcsImV4cCI6MTY5MTQ4MDU4NywiaWQiOjEsInJvbGUiOiJVU0VSIn0.JMkRN6UwBkHtm42H83I9xez-2mo5wZIFyXtmwRGqYio",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/friend/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"friend",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "친구 신청 목록 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzM0MDgsImV4cCI6MTY5MTQ4MDYwOCwiaWQiOjIsInJvbGUiOiJVU0VSIn0.d0NzknImVFVSx4B41KlYZpK8b1yPO26rC8DHSW-y4wk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/friend",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"friend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "친구 신청 수락, 거절",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTE0NzM0MDgsImV4cCI6MTY5MTQ4MDYwOCwiaWQiOjIsInJvbGUiOiJVU0VSIn0.d0NzknImVFVSx4B41KlYZpK8b1yPO26rC8DHSW-y4wk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"state\": \"ACCEPT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/friend/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"friend",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
